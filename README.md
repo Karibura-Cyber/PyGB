@@ -9,15 +9,15 @@ A **Game Boy-style 2D game making library** for Python, built on [pygame-ce](htt
 ## Install
 
 ```bash
-pip install pygb
+pip install pygame-gb
 ```
 
 **Optional extras:**
 
 ```bash
-pip install "pygb[tmx]"    # Tiled .tmx map support (pytmx)
-pip install "pygb[image]"  # PNG tileset loading   (Pillow)
-pip install "pygb[all]"    # Both of the above
+pip install "pygame-gb[tmx]"    # Tiled .tmx map support (pytmx)
+pip install "pygame-gb[image]"  # PNG tileset loading   (Pillow)
+pip install "pygame-gb[all]"    # Both of the above
 ```
 
 ---
