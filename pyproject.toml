@@ -2,16 +2,77 @@
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
+# ── Project metadata ──────────────────────────────────────────────────────────
+
 [project]
-name = "pygb"
-version = "0.1.0"
-description = "A Game Boy-style game making library for Python"
+name            = "pygb"
+version         = "0.1.0"
+description     = "A Game Boy-style 2D game making library for Python"
+readme          = "README.md"
+license         = { file = "LICENSE" }
 requires-python = ">=3.9"
-dependencies = ["pygame>=2.0", "pytmx"]
+
+authors = [
+    { name = "Chawanwit Akarajirathanachot", email = "chawanwit.akarajirathanachot@gmail.com" },
+]
+
+keywords = [
+    "gameboy", "game-boy", "retro", "pixel", "pygame",
+    "2d", "game-engine", "tilemap", "tiled", "sprite",
+]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Games/Entertainment",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+# Core dependency: pygame-ce (community edition — the actively maintained fork)
+dependencies = [
+    "pygame-ce>=2.5",
+]
 
 [project.optional-dependencies]
+# Tiled .tmx map support
+tmx   = ["pytmx>=3.31"]
+# PNG tileset loading via Pillow
 image = ["Pillow>=9.0"]
+# Install everything
+all   = ["pytmx>=3.31", "Pillow>=9.0"]
+
+# ── URLs ──────────────────────────────────────────────────────────────────────
+
+[project.urls]
+"Homepage"      = "https://github.com/Karibura-Cyber/pygb"
+"Documentation" = "https://github.com/Karibura-Cyber/pygb#readme"
+"Bug Tracker"   = "https://github.com/Karibura-Cyber/pygb/issues"
+"Source"        = "https://github.com/Karibura-Cyber/pygb"
+
+# ── CLI entry points ──────────────────────────────────────────────────────────
+
+[project.scripts]
+# python -m pygb.editor  (PNG or TMX, command-line args)
+pygb-editor = "pygb.editor.__main__:main"
+# python -m pygb.colli   (PNG or blank grid, optional tkinter startup dialog)
+pygb-collision = "pygb.colli.__main__:main"
+
+# ── Package discovery ─────────────────────────────────────────────────────────
 
 [tool.setuptools.packages.find]
-where = ["."]
+where   = ["."]
 include = ["pygb*"]
+
+[tool.setuptools.package-data]
+# Include any non-Python files shipped with the package (fonts, etc.)
+pygb = ["py.typed"]
