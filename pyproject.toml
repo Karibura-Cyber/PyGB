@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pygb"
+version = "0.1.0"
+description = "A Game Boy-style game making library for Python"
+requires-python = ">=3.9"
+dependencies = ["pygame>=2.0", "pytmx"]
+
+[project.optional-dependencies]
+image = ["Pillow>=9.0"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pygb*"]
