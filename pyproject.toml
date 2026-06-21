@@ -54,10 +54,10 @@ all   = ["pytmx>=3.31", "Pillow>=9.0"]
 # ── URLs ──────────────────────────────────────────────────────────────────────
 
 [project.urls]
-"Homepage"      = "https://github.com/Karibura-Cyber/pygb"
-"Documentation" = "https://github.com/Karibura-Cyber/pygb#readme"
-"Bug Tracker"   = "https://github.com/Karibura-Cyber/pygb/issues"
-"Source"        = "https://github.com/Karibura-Cyber/pygb"
+"Homepage"      = "https://github.com/Karibura-Cyber/PyGB"
+"Documentation" = "https://github.com/Karibura-Cyber/PyGB#readme"
+"Bug Tracker"   = "https://github.com/Karibura-Cyber/PyGB/issues"
+"Source"        = "https://github.com/Karibura-Cyber/PyGB"
 
 # ── CLI entry points ──────────────────────────────────────────────────────────
 
