@@ -42,12 +42,10 @@ pip install pytmx
 ## Running Examples
 
 ```bash
-python examples/hello_world.py
-python examples/bouncing_ball.py
-python examples/platformer.py
-python examples/test_bg.py
-python examples/tmx_demo.py        # requires pytmx + examples/assets/
+python examples/example.py         # TMX demo: dungeon map, player, camera, collision
 ```
+
+Requires `pytmx` and the assets under `examples/assets/tilemaps/`.
 
 ---
 

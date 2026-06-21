@@ -122,12 +122,12 @@ def load_tmx(
     tile_h: int = tiled_map.tileheight
 
     tile_layers = [
-        l for l in tiled_map.layers
-        if isinstance(l, pytmx.TiledTileLayer)
+        lyr for lyr in tiled_map.layers
+        if isinstance(lyr, pytmx.TiledTileLayer)
     ]
     object_groups = [
-        l for l in tiled_map.layers
-        if isinstance(l, pytmx.TiledObjectGroup)
+        lyr for lyr in tiled_map.layers
+        if isinstance(lyr, pytmx.TiledObjectGroup)
     ]
 
     if not tile_layers:

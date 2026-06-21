@@ -289,7 +289,7 @@ class GameBoy:
                         flip_x=sprite.flip_x, flip_y=sprite.flip_y,
                         transparent_color=0)
         if sprite.tile_b is not None:
-            self._blit_tile(sprite.tile_b, sprite.x, sprite.y + 8, pal,
+            self._blit_tile(sprite.tile_b, sprite.x, sprite.y + sprite.tile.size, pal,
                             flip_x=sprite.flip_x, flip_y=sprite.flip_y,
                             transparent_color=0)
 

@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PyGB — Documentation</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <!-- Highlight.js (GitHub Dark theme) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" rel="stylesheet" />
+
+  <style>
+    :root {
+      --gb-green:  #9bbc0f;
+      --gb-dark:   #0f380f;
+      --sidebar-w: 270px;
+    }
+
+    /* ── Layout ──────────────────────────────────────────────────── */
+    body {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: #0d1117;
+      color: #c9d1d9;
+    }
+
+    #sidebar {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: var(--sidebar-w);
+      overflow-y: auto;
+      background: #161b22;
+      border-right: 1px solid #30363d;
+      z-index: 100;
+      padding-bottom: 2rem;
+    }
+
+    #sidebar::-webkit-scrollbar { width: 4px; }
+    #sidebar::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
+
+    #main-content {
+      margin-left: var(--sidebar-w);
+      padding: 2.5rem 3rem 4rem;
+      max-width: 900px;
+    }
+
+    @media (max-width: 991px) {
+      #sidebar  { position: static; width: 100%; border-right: none; border-bottom: 1px solid #30363d; }
+      #main-content { margin-left: 0; padding: 1.5rem 1rem; }
+    }
+
+    /* ── Sidebar brand ───────────────────────────────────────────── */
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      padding: 1.2rem 1.25rem 1rem;
+      border-bottom: 1px solid #30363d;
+      text-decoration: none;
+    }
+    .sidebar-brand .gb-pixel {
+      display: grid;
+      grid-template-columns: repeat(4,6px);
+      grid-template-rows: repeat(4,6px);
+      gap: 1px;
+    }
+    .sidebar-brand .gb-pixel span {
+      border-radius: 1px;
+      background: var(--gb-green);
+    }
+    .sidebar-brand .gb-pixel span:nth-child(1)  { opacity:.2; }
+    .sidebar-brand .gb-pixel span:nth-child(2)  { opacity:.9; }
+    .sidebar-brand .gb-pixel span:nth-child(3)  { opacity:.9; }
+    .sidebar-brand .gb-pixel span:nth-child(4)  { opacity:.2; }
+    .sidebar-brand .gb-pixel span:nth-child(5)  { opacity:.9; }
+    .sidebar-brand .gb-pixel span:nth-child(8)  { opacity:.9; }
+    .sidebar-brand .gb-pixel span:nth-child(9)  { opacity:.9; }
+    .sidebar-brand .gb-pixel span:nth-child(12) { opacity:.9; }
+    .sidebar-brand .gb-pixel span:nth-child(13) { opacity:.2; }
+    .sidebar-brand .gb-pixel span:nth-child(14) { opacity:.9; }
+    .sidebar-brand .gb-pixel span:nth-child(15) { opacity:.9; }
+    .sidebar-brand .gb-pixel span:nth-child(16) { opacity:.2; }
+    .sidebar-brand h5 { margin: 0; color: var(--gb-green); font-weight: 700; letter-spacing: .04em; }
+    .sidebar-brand small { color: #8b949e; font-size: .72rem; }
+
+    /* ── Sidebar nav ─────────────────────────────────────────────── */
+    .sidebar-section {
+      font-size: .68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: #8b949e;
+      padding: 1.1rem 1.25rem .35rem;
+    }
+    .sidebar-nav .nav-link {
+      color: #8b949e;
+      font-size: .855rem;
+      padding: .3rem 1.25rem;
+      border-left: 3px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .sidebar-nav .nav-link:hover,
+    .sidebar-nav .nav-link.active {
+      color: var(--gb-green);
+      border-left-color: var(--gb-green);
+      background: rgba(155,188,15,.07);
+    }
+    .sidebar-nav .nav-link i { margin-right: .4rem; font-size: .8rem; }
+
+    /* ── Section headings ────────────────────────────────────────── */
+    .doc-section { scroll-margin-top: 1.5rem; }
+
+    h1.page-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    h1.page-title span { color: var(--gb-green); }
+
+    h2.section-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #e6edf3;
+      border-bottom: 1px solid #30363d;
+      padding-bottom: .4rem;
+      margin-top: 2.8rem;
+      margin-bottom: 1.1rem;
+    }
+    h3.sub-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #c9d1d9;
+      margin-top: 1.8rem;
+      margin-bottom: .7rem;
+    }
+
+    /* ── Badge pill ──────────────────────────────────────────────── */
+    .badge-gb {
+      background: rgba(155,188,15,.18);
+      color: var(--gb-green);
+      border: 1px solid rgba(155,188,15,.35);
+      font-size: .72rem;
+      padding: .18em .55em;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    /* ── Code blocks ─────────────────────────────────────────────── */
+    pre {
+      background: #161b22 !important;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 1rem 1.2rem !important;
+      font-size: .84rem;
+      overflow-x: auto;
+    }
+    pre code.hljs { background: transparent !important; padding: 0 !important; }
+    code:not(pre code) {
+      background: #21262d;
+      color: #f0883e;
+      padding: .1em .35em;
+      border-radius: 4px;
+      font-size: .87em;
+    }
+
+    /* ── Tables ──────────────────────────────────────────────────── */
+    .table {
+      font-size: .88rem;
+      border-color: #30363d;
+    }
+    .table thead th {
+      background: #161b22;
+      color: var(--gb-green);
+      font-weight: 600;
+      border-bottom: 2px solid #30363d;
+    }
+    .table-dark { --bs-table-bg: #161b22; }
+    .table > :not(caption) > * > * { border-color: #21262d; }
+
+    /* ── Cards / callouts ────────────────────────────────────────── */
+    .callout {
+      border-left: 4px solid;
+      padding: .8rem 1rem;
+      border-radius: 0 6px 6px 0;
+      margin: 1.2rem 0;
+      font-size: .9rem;
+    }
+    .callout-tip   { border-color: var(--gb-green); background: rgba(155,188,15,.07); }
+    .callout-warn  { border-color: #e3b341;          background: rgba(227,179,65,.07); }
+    .callout-info  { border-color: #58a6ff;          background: rgba(88,166,255,.07); }
+    .callout-title { font-weight: 700; margin-bottom: .3rem; }
+    .callout-tip  .callout-title  { color: var(--gb-green); }
+    .callout-warn .callout-title  { color: #e3b341; }
+    .callout-info .callout-title  { color: #58a6ff; }
+
+    /* ── API cards ───────────────────────────────────────────────── */
+    .api-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .api-card .api-sig {
+      font-family: monospace;
+      font-size: .9rem;
+      color: #79c0ff;
+      margin-bottom: .4rem;
+    }
+    .api-card .api-sig .api-name { color: #d2a8ff; }
+    .api-card .api-sig .api-param { color: #f0883e; }
+    .api-card .api-sig .api-ret  { color: var(--gb-green); }
+    .api-card p { font-size: .875rem; color: #8b949e; margin: 0; }
+
+    /* ── Hero ────────────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #161b22 0%, #0d1117 60%);
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 2rem 2.2rem;
+      margin-bottom: 2rem;
+    }
+    .hero .version-badge {
+      background: rgba(155,188,15,.15);
+      color: var(--gb-green);
+      border: 1px solid rgba(155,188,15,.4);
+      font-size: .78rem;
+      padding: .2em .6em;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .hero p { color: #8b949e; max-width: 550px; }
+
+    /* ── Scroll spy offset ───────────────────────────────────────── */
+    section[id] { scroll-margin-top: 1rem; }
+  </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#sidebar-nav" data-bs-offset="80">
+
+<!-- ═══════════════════════════ SIDEBAR ═══════════════════════════ -->
+<nav id="sidebar">
+  <a href="#top" class="sidebar-brand text-decoration-none">
+    <div class="gb-pixel">
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <div>
+      <h5>PyGB</h5>
+      <small>Game Boy Engine</small>
+    </div>
+  </a>
+
+  <div id="sidebar-nav">
+    <div class="sidebar-section">Getting Started</div>
+    <ul class="nav flex-column sidebar-nav">
+      <li class="nav-item"><a class="nav-link" href="#overview"><i class="bi bi-house"></i>Overview</a></li>
+      <li class="nav-item"><a class="nav-link" href="#setup"><i class="bi bi-download"></i>Setup</a></li>
+      <li class="nav-item"><a class="nav-link" href="#quickstart"><i class="bi bi-play-circle"></i>Quick Start</a></li>
+    </ul>
+
+    <div class="sidebar-section">Architecture</div>
+    <ul class="nav flex-column sidebar-nav">
+      <li class="nav-item"><a class="nav-link" href="#lifecycle"><i class="bi bi-arrow-repeat"></i>Lifecycle Hooks</a></li>
+      <li class="nav-item"><a class="nav-link" href="#render-pipeline"><i class="bi bi-layers"></i>Render Pipeline</a></li>
+      <li class="nav-item"><a class="nav-link" href="#subsystems"><i class="bi bi-grid"></i>Subsystems</a></li>
+      <li class="nav-item"><a class="nav-link" href="#constraints"><i class="bi bi-exclamation-circle"></i>Key Constraints</a></li>
+    </ul>
+
+    <div class="sidebar-section">Core API</div>
+    <ul class="nav flex-column sidebar-nav">
+      <li class="nav-item"><a class="nav-link" href="#gameboy"><i class="bi bi-joystick"></i>GameBoy</a></li>
+      <li class="nav-item"><a class="nav-link" href="#tile"><i class="bi bi-square"></i>Tile</a></li>
+      <li class="nav-item"><a class="nav-link" href="#sprite"><i class="bi bi-person"></i>Sprite</a></li>
+      <li class="nav-item"><a class="nav-link" href="#tilemap"><i class="bi bi-map"></i>TileMap</a></li>
+      <li class="nav-item"><a class="nav-link" href="#input"><i class="bi bi-controller"></i>Input</a></li>
+      <li class="nav-item"><a class="nav-link" href="#graphics"><i class="bi bi-display"></i>Graphics</a></li>
+      <li class="nav-item"><a class="nav-link" href="#audio"><i class="bi bi-music-note-beamed"></i>Audio</a></li>
+    </ul>
+
+    <div class="sidebar-section">Tile Size</div>
+    <ul class="nav flex-column sidebar-nav">
+      <li class="nav-item"><a class="nav-link" href="#tile-size"><i class="bi bi-aspect-ratio"></i>Variable Tile Size</a></li>
+    </ul>
+
+    <div class="sidebar-section">TMX Maps</div>
+    <ul class="nav flex-column sidebar-nav">
+      <li class="nav-item"><a class="nav-link" href="#tmx-loading"><i class="bi bi-file-earmark-code"></i>Loading TMX</a></li>
+      <li class="nav-item"><a class="nav-link" href="#tmx-fullcolor"><i class="bi bi-palette"></i>Full-Colour Rendering</a></li>
+      <li class="nav-item"><a class="nav-link" href="#tmx-collision"><i class="bi bi-bounding-box"></i>Collision</a></li>
+    </ul>
+
+    <div class="sidebar-section">Utilities</div>
+    <ul class="nav flex-column sidebar-nav">
+      <li class="nav-item"><a class="nav-link" href="#camera"><i class="bi bi-camera-video"></i>Camera</a></li>
+      <li class="nav-item"><a class="nav-link" href="#collision"><i class="bi bi-shield-check"></i>CollisionMap</a></li>
+      <li class="nav-item"><a class="nav-link" href="#utils"><i class="bi bi-tools"></i>Helpers</a></li>
+      <li class="nav-item"><a class="nav-link" href="#font"><i class="bi bi-fonts"></i>Font</a></li>
+      <li class="nav-item"><a class="nav-link" href="#color"><i class="bi bi-droplet"></i>Palettes</a></li>
+    </ul>
+
+    <div class="sidebar-section">Tools</div>
+    <ul class="nav flex-column sidebar-nav">
+      <li class="nav-item"><a class="nav-link" href="#editor"><i class="bi bi-brush"></i>Collision Editor</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════ CONTENT ═══════════════════════════ -->
+<main id="main-content">
+
+  <!-- Hero -->
+  <div class="hero" id="top">
+    <div class="d-flex align-items-center gap-2 mb-2">
+      <span class="fs-3 fw-bold text-white">PyGB</span>
+      <span class="version-badge">v0.1.0</span>
+    </div>
+    <p class="mb-3">A Game Boy-style 2D game engine for Python, built on pygame-ce. 160×144 viewport, 4-color palette, GB-authentic audio channels, and a full TMX tilemap pipeline.</p>
+    <div class="d-flex gap-2 flex-wrap">
+      <a href="#setup"      class="btn btn-sm btn-outline-secondary"><i class="bi bi-download me-1"></i>Install</a>
+      <a href="#quickstart" class="btn btn-sm btn-outline-secondary"><i class="bi bi-play me-1"></i>Quick Start</a>
+      <a href="#tmx-loading" class="btn btn-sm btn-outline-secondary"><i class="bi bi-map me-1"></i>TMX Guide</a>
+    </div>
+  </div>
+
+  <!-- ── Overview ─────────────────────────────────────────────────── -->
+  <section id="overview" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-house me-2"></i>Overview</h2>
+    <p>PyGB is a <strong>library</strong>, not an application. Every game starts by creating a <code>GameBoy</code> instance and registering lifecycle hooks.</p>
+    <div class="row g-3 mt-1">
+      <div class="col-sm-6 col-lg-4">
+        <div class="api-card h-100">
+          <div class="api-sig"><i class="bi bi-joystick me-1"></i>GameBoy</div>
+          <p>Main loop, input, surface, sprite list, tile cache.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="api-card h-100">
+          <div class="api-sig"><i class="bi bi-layers me-1"></i>Graphics</div>
+          <p>VRAM (256 tiles), BG/Window tilemaps, palettes, scroll.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="api-card h-100">
+          <div class="api-sig"><i class="bi bi-shield-check me-1"></i>CollisionMap</div>
+          <p>Tile-resolution solid/passable grid with AABB sliding.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="api-card h-100">
+          <div class="api-sig"><i class="bi bi-file-earmark-code me-1"></i>TMX Loader</div>
+          <p>Tiled .tmx import with full-colour rendering pipeline.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="api-card h-100">
+          <div class="api-sig"><i class="bi bi-music-note-beamed me-1"></i>Audio</div>
+          <p>Four GB-style channels: 2× pulse, wave, noise.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="api-card h-100">
+          <div class="api-sig"><i class="bi bi-brush me-1"></i>Editor</div>
+          <p>Paint solid tiles on PNG or TMX, export JSON collision map.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Setup ────────────────────────────────────────────────────── -->
+  <section id="setup" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-download me-2"></i>Setup</h2>
+    <pre><code class="language-bash">pip install pygame-ce
+pip install -e .
+
+# Optional — PNG tileset support
+pip install Pillow
+
+# Optional — Tiled .tmx map support
+pip install pytmx</code></pre>
+
+    <h3 class="sub-title">Running the Example</h3>
+    <pre><code class="language-bash">python examples/example.py   # TMX demo: dungeon map, player, camera, collision</code></pre>
+    <div class="callout callout-info">
+      <div class="callout-title"><i class="bi bi-info-circle me-1"></i>Requirements</div>
+      Requires <code>pytmx</code> and the assets under <code>examples/assets/tilemaps/</code>.
+    </div>
+  </section>
+
+  <!-- ── Quick Start ──────────────────────────────────────────────── -->
+  <section id="quickstart" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-play-circle me-2"></i>Quick Start</h2>
+    <p>Create a <code>GameBoy</code>, define tiles, create sprites, register hooks, and call <code>gb.run()</code>.</p>
+    <pre><code class="language-python">from pygb import GameBoy, Tile
+import pygb.color as color
+
+gb = GameBoy(title="My Game", scale=3, palette=color.DMG)
+
+player_tile = Tile([
+    [0,0,1,1,1,1,0,0],
+    [0,1,3,3,3,3,1,0],
+    [0,1,3,2,2,3,1,0],
+    [0,1,3,3,3,3,1,0],
+    [0,0,1,1,1,1,0,0],
+    [0,0,1,0,0,1,0,0],
+    [0,0,1,0,0,1,0,0],
+    [0,0,0,0,0,0,0,0],
+])
+player = gb.create_sprite(player_tile, x=76, y=68)
+
+@gb.on_update
+def update():
+    dx, dy = gb.input.direction()
+    player.move(dx * 2, dy * 2)
+    player.clamp(0, 0, 152, 136)
+    if dx < 0: player.flip_x = True
+    elif dx > 0: player.flip_x = False
+
+gb.run()</code></pre>
+  </section>
+
+  <!-- ── Lifecycle Hooks ───────────────────────────────────────────── -->
+  <section id="lifecycle" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-arrow-repeat me-2"></i>Lifecycle Hooks</h2>
+    <p>Register Python functions as callbacks using decorators on the <code>GameBoy</code> instance.</p>
+    <pre><code class="language-python">@gb.on_start   # called once before the loop begins
+def init():
+    ...
+
+@gb.on_update  # called every frame — put game logic here
+def update():
+    ...
+
+@gb.on_draw    # called every frame after automatic rendering
+def draw():
+    # raw pygame drawing into gb.surface
+    pygame.draw.rect(gb.surface, (255,0,0), (10,10,20,20))
+
+@gb.on_stop    # called once on exit
+def cleanup():
+    ...</code></pre>
+    <div class="callout callout-tip">
+      <div class="callout-title"><i class="bi bi-lightbulb me-1"></i>Tip</div>
+      Keep all state initialisation in <code>on_start</code>. Use <code>on_draw</code> only for raw pygame drawing that bypasses the tile pipeline (e.g. debug overlays, full-colour TMX rendering).
+    </div>
+  </section>
+
+  <!-- ── Render Pipeline ──────────────────────────────────────────── -->
+  <section id="render-pipeline" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-layers me-2"></i>Render Pipeline</h2>
+    <p>Executed each frame in the following order inside <code>GameBoy._render</code>:</p>
+    <ol class="ps-3" style="line-height:2;">
+      <li>Clear surface to <code>palette[bg_palette[0]]</code></li>
+      <li><strong>BG tilemap</strong> (<code>graphics.bg</code>) — scrollable with <code>scroll_x / scroll_y</code></li>
+      <li><strong>Priority sprites</strong> — drawn behind BG colours 1–3</li>
+      <li><strong>Normal sprites</strong> — drawn on top of BG</li>
+      <li><strong>Window tilemap</strong> (<code>graphics.window</code>) — fixed overlay (HUD)</li>
+      <li><strong><code>on_draw</code> callback</strong> — raw pygame drawing into <code>gb.surface</code></li>
+    </ol>
+    <div class="callout callout-info">
+      <div class="callout-title"><i class="bi bi-info-circle me-1"></i>Tile Cache</div>
+      Tile surfaces are cached by <code>(id(tile), palette_tuple, flip_x, flip_y, transparent_color)</code>.
+      Call <code>gb.clear_tile_cache()</code> after modifying tile pixel data or swapping the palette at runtime.
+    </div>
+    <div class="callout callout-tip">
+      <div class="callout-title"><i class="bi bi-lightbulb me-1"></i>Full-Colour TMX</div>
+      Set <code>gb.graphics.bg_enabled = False</code> and render all layers manually in <code>on_draw</code>
+      using <code>TmxResult.surfaces</code> to bypass palette quantisation entirely.
+    </div>
+  </section>
+
+  <!-- ── Subsystems ───────────────────────────────────────────────── -->
+  <section id="subsystems" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-grid me-2"></i>Subsystems</h2>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Module</th>
+            <th>Class</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>game.py</code></td><td><code>GameBoy</code></td><td>Main loop, sprite list, screen helpers, tile cache</td></tr>
+          <tr><td><code>graphics.py</code></td><td><code>Graphics</code></td><td>VRAM tile list (max 256), BG/Window TileMaps, palettes, scroll</td></tr>
+          <tr><td><code>tilemap.py</code></td><td><code>TileMap</code></td><td>2-D grid of tile indices, wraps at boundaries (torus)</td></tr>
+          <tr><td><code>tile.py</code></td><td><code>Tile</code></td><td>N×N pixel grid of colour indices 0–3; size auto-detected</td></tr>
+          <tr><td><code>sprite.py</code></td><td><code>Sprite</code></td><td>Position, flip, palette slot, AABB collision</td></tr>
+          <tr><td><code>spritegroup.py</code></td><td><code>SpriteGroup</code></td><td>Sprite + named animation states</td></tr>
+          <tr><td><code>input.py</code></td><td><code>Input, Button</code></td><td>Per-frame held/pressed/released state</td></tr>
+          <tr><td><code>audio.py</code></td><td><code>Audio</code></td><td>Four GB-style channels (pulse×2, wave, noise)</td></tr>
+          <tr><td><code>collision.py</code></td><td><code>CollisionMap</code></td><td>Tile-resolution solid map; <code>resolve()</code> AABB sliding</td></tr>
+          <tr><td><code>assets.py</code></td><td>—</td><td>PNG → <code>Tile</code> conversion, luminance / explicit palette</td></tr>
+          <tr><td><code>tmx.py</code></td><td><code>TmxResult, TmxObject</code></td><td>Tiled .tmx loader via pytmx</td></tr>
+          <tr><td><code>font.py</code></td><td>—</td><td>Built-in 8×8 bitmap font; <code>build_font_tiles</code> / <code>draw_text</code></td></tr>
+          <tr><td><code>utils.py</code></td><td><code>Timer, Rect, Camera, Animation, RNG</code></td><td>Helpers</td></tr>
+          <tr><td><code>color.py</code></td><td>—</td><td>Named palettes: <code>DMG, GRAY, POCKET, GBC</code></td></tr>
+          <tr><td><code>constants.py</code></td><td>—</td><td>Legacy hardware constants; <code>TILE_SIZE = 8</code> kept for reference</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── Key Constraints ──────────────────────────────────────────── -->
+  <section id="constraints" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-exclamation-circle me-2"></i>Key Constraints</h2>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="api-card h-100">
+          <div class="api-sig mb-1">VRAM limit</div>
+          <p>256 tiles maximum. <code>graphics.add_tile()</code> raises <code>RuntimeError</code> when full.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="api-card h-100">
+          <div class="api-sig mb-1">Sprites</div>
+          <p>40 sprites is the design target (no hard engine limit).</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="api-card h-100">
+          <div class="api-sig mb-1">Colour indices</div>
+          <p>0–3 per pixel. Index 0 is transparent for sprites.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="api-card h-100">
+          <div class="api-sig mb-1">Default viewport</div>
+          <p>160×144 px. Override with <code>GameBoy(width=..., height=...)</code>.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="api-card h-100">
+          <div class="api-sig mb-1">CollisionMap tunnelling</div>
+          <p><code>resolve()</code> may tunnel if displacement ≥ <code>tile_size</code> px/frame.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="api-card h-100">
+          <div class="api-sig mb-1">Player vs tile size</div>
+          <p>The player hitbox passed to <code>resolve()</code> can be smaller than <code>tile_size</code> — e.g. 8×8 hitbox on a 16×16 tile map works correctly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GameBoy API ───────────────────────────────────────────────── -->
+  <section id="gameboy" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-joystick me-2"></i>GameBoy</h2>
+    <pre><code class="language-python">gb = GameBoy(
+    title    = "My Game",
+    scale    = 3,          # window scale multiplier
+    fps      = 60,
+    palette  = color.DMG,  # 4-colour RGB palette
+    width    = 160,        # viewport width  in px
+    height   = 144,        # viewport height in px
+    tile_size = 8,         # default tile size (set automatically by load_tmx)
+)</code></pre>
+
+    <h3 class="sub-title">Key Properties</h3>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>gb.graphics</code></td><td><code>Graphics</code></td><td>VRAM, tilemap, palette, scroll</td></tr>
+          <tr><td><code>gb.input</code></td><td><code>Input</code></td><td>Keyboard / gamepad state</td></tr>
+          <tr><td><code>gb.audio</code></td><td><code>Audio</code></td><td>Sound channels</td></tr>
+          <tr><td><code>gb.surface</code></td><td><code>pygame.Surface</code></td><td>Raw game surface for <code>on_draw</code></td></tr>
+          <tr><td><code>gb.frame</code></td><td><code>int</code></td><td>Frame counter since start</td></tr>
+          <tr><td><code>gb.tile_size</code></td><td><code>int</code></td><td>Active tile size in px</td></tr>
+          <tr><td><code>gb.width / gb.height</code></td><td><code>int</code></td><td>Viewport dimensions</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Key Methods</h3>
+    <div class="api-card mb-2">
+      <div class="api-sig"><span class="api-name">gb.create_sprite</span>(<span class="api-param">tile, x=0, y=0, palette=0</span>) → <span class="api-ret">Sprite</span></div>
+      <p>Create and register a sprite. Returns a <code>Sprite</code> you can move and modify each frame.</p>
+    </div>
+    <div class="api-card mb-2">
+      <div class="api-sig"><span class="api-name">gb.clear_tile_cache</span>()</div>
+      <p>Discard cached tile surfaces. Call after changing pixel data or swapping the palette at runtime.</p>
+    </div>
+    <div class="api-card mb-2">
+      <div class="api-sig"><span class="api-name">gb.quit</span>()</div>
+      <p>Signal the game loop to exit cleanly.</p>
+    </div>
+    <div class="api-card">
+      <div class="api-sig"><span class="api-name">gb.run</span>()</div>
+      <p>Start the event and render loop. Blocks until the window is closed or <code>gb.quit()</code> is called.</p>
+    </div>
+  </section>
+
+  <!-- ── Tile ─────────────────────────────────────────────────────── -->
+  <section id="tile" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-square me-2"></i>Tile</h2>
+    <p>An N×N grid of colour indices (0–3). The size is auto-detected from the pixel data.</p>
+    <pre><code class="language-python">from pygb import Tile
+
+# 8×8 tile — size inferred from the data
+t = Tile([
+    [0,0,1,1,1,1,0,0],
+    [0,1,3,3,3,3,1,0],
+    ...
+])
+
+# 16×16 tile
+big = Tile([[...16 rows of 16 values...]])  # size = 16
+
+# Factory helpers
+blank = Tile.solid(0)           # all index-0 (transparent/background)
+wall  = Tile.solid(3)           # all index-3 (solid dark)
+check = Tile.checkerboard()     # alternating 0 and 1
+box   = Tile.border(3, fill=0)  # outlined box</code></pre>
+
+    <h3 class="sub-title">Methods</h3>
+    <div class="api-card mb-2">
+      <div class="api-sig"><span class="api-name">tile.get_pixel</span>(<span class="api-param">x, y</span>) → <span class="api-ret">int</span></div>
+      <p>Return the colour index at (x, y).</p>
+    </div>
+    <div class="api-card mb-2">
+      <div class="api-sig"><span class="api-name">tile.set_pixel</span>(<span class="api-param">x, y, value</span>)</div>
+      <p>Set a colour index. Call <code>gb.clear_tile_cache()</code> afterwards if the tile is already in VRAM.</p>
+    </div>
+    <div class="api-card">
+      <div class="api-sig"><span class="api-name">tile.rotate_90</span>() → <span class="api-ret">Tile</span></div>
+      <p>Return a new tile rotated 90° clockwise.</p>
+    </div>
+  </section>
+
+  <!-- ── Sprite ───────────────────────────────────────────────────── -->
+  <section id="sprite" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-person me-2"></i>Sprite</h2>
+    <pre><code class="language-python">player = gb.create_sprite(tile, x=0, y=0, palette=0)
+
+# Each frame in on_update:
+player.x       = 40
+player.y       = 60
+player.flip_x  = True   # horizontal mirror
+player.flip_y  = False
+player.tile    = walk_tile   # swap animation frame
+player.visible = True
+
+# Helper methods
+player.move(dx, dy)           # shift by (dx, dy)
+player.clamp(x0, y0, x1, y1) # keep within pixel bounds
+player.collides_with(other)   # → bool  AABB test vs another Sprite
+player.on_screen(margin=0)    # → bool</code></pre>
+
+    <div class="callout callout-info">
+      <div class="callout-title"><i class="bi bi-info-circle me-1"></i>8×16 Sprites</div>
+      Assign a second tile to <code>sprite.tile_b</code> for a two-tile-tall sprite. The engine draws <code>tile</code> at <code>(x, y)</code> and <code>tile_b</code> at <code>(x, y + tile.size)</code>.
+    </div>
+  </section>
+
+  <!-- ── TileMap ──────────────────────────────────────────────────── -->
+  <section id="tilemap" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-map me-2"></i>TileMap</h2>
+    <pre><code class="language-python">from pygb import TileMap
+
+tm = TileMap(width=32, height=32)
+tm.set(tx, ty, vram_index)   # write tile index
+tm.get(tx, ty)               # read tile index (wraps at boundary)
+tm.fill(vram_index)          # fill entire map
+
+# Assign to BG or Window
+gb.graphics.bg     = tm   # scrollable background
+gb.graphics.window = tm   # fixed HUD overlay</code></pre>
+  </section>
+
+  <!-- ── Input ────────────────────────────────────────────────────── -->
+  <section id="input" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-controller me-2"></i>Input</h2>
+    <pre><code class="language-python">dx, dy = gb.input.direction()     # (-1/0/1, -1/0/1) from arrow keys
+
+# Button states — checked once per frame
+gb.input.held("a")           # True while held
+gb.input.pressed("a")        # True on the frame it was first pressed
+gb.input.released("a")       # True on the frame it was released
+
+# Available button names: "a", "b", "start", "select",
+#                          "up", "down", "left", "right"
+
+# Button enum (import Button from pygb)
+from pygb import Button
+gb.input.pressed(Button.A)
+gb.input.pressed(Button.START)</code></pre>
+  </section>
+
+  <!-- ── Graphics ─────────────────────────────────────────────────── -->
+  <section id="graphics" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-display me-2"></i>Graphics</h2>
+    <pre><code class="language-python">gfx = gb.graphics
+
+# VRAM management
+idx = gfx.add_tile(tile)              # returns VRAM index 0–255
+gfx.add_tiles([t1, t2, t3])           # returns first index
+gfx.tile_count                         # number of tiles loaded
+
+# Scroll
+gfx.scroll_x = 0
+gfx.scroll_y = 0
+gfx.scroll_to(x, y)                   # set both at once
+
+# Enable / disable layers
+gfx.bg_enabled     = True
+gfx.window_enabled = True
+gfx.window_y       = 136   # Y position where the window layer starts
+
+# Palettes — list of 4 VRAM indices into gb.palette
+gfx.bg_palette     = [0, 1, 2, 3]
+gfx.obj_palette0   = [0, 1, 2, 3]
+gfx.obj_palette1   = [0, 1, 2, 3]</code></pre>
+  </section>
+
+  <!-- ── Audio ────────────────────────────────────────────────────── -->
+  <section id="audio" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-music-note-beamed me-2"></i>Audio</h2>
+    <pre><code class="language-python">audio = gb.audio
+
+# Pulse channels (ch1, ch2) — square wave with envelope
+audio.ch1.tone(523, duration=60)   # C5 note, 60 frames
+audio.ch1.volume = 0.5
+
+# Wave channel (ch3) — custom 32-sample waveform
+audio.ch3.set_wave([0,1,2,3,3,2,1,0, ...])   # 32 samples, values 0–15
+audio.ch3.tone(220, duration=30)
+
+# Noise channel (ch4) — for percussive effects
+audio.ch4.noise(duration=20)
+audio.ch4.volume = 0.8</code></pre>
+  </section>
+
+  <!-- ── Tile Size ────────────────────────────────────────────────── -->
+  <section id="tile-size" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-aspect-ratio me-2"></i>Variable Tile Size</h2>
+    <p>PyGB defaults to <strong>8×8 px</strong> tiles (classic Game Boy). Pass <code>tile_size=N</code> to use a different size — required when loading Tiled maps with 16×16 or other tile sizes.</p>
+    <pre><code class="language-python">gb = GameBoy(title="My Game", tile_size=16)
+
+# Tile size is inferred from the pixel data automatically:
+my_tile = Tile([[...16 rows of 16 values...]])  # size = 16
+
+# CollisionMap needs the matching tile size:
+cmap = CollisionMap(map_cols, map_rows, tile_size=16)</code></pre>
+    <div class="callout callout-tip">
+      <div class="callout-title"><i class="bi bi-lightbulb me-1"></i>With TMX</div>
+      <code>load_tmx()</code> sets <code>gb.tile_size</code> automatically from the TMX file — you rarely need to set it manually.
+    </div>
+  </section>
+
+  <!-- ── TMX Loading ──────────────────────────────────────────────── -->
+  <section id="tmx-loading" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-file-earmark-code me-2"></i>Loading a TMX Map</h2>
+    <pre><code class="language-python">pip install pytmx</code></pre>
+    <pre><code class="language-python">from pygb import GameBoy, load_tmx, CollisionMap, Camera
+
+gb = GameBoy(title="Tiled Demo", scale=3)
+
+@gb.on_start
+def init():
+    result = load_tmx(gb, "level1.tmx")
+    # gb.tile_size is set automatically from the TMX file</code></pre>
+
+    <h3 class="sub-title">TmxResult Fields</h3>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>tile_size</code></td><td><code>int</code></td><td>Tile width/height in pixels</td></tr>
+          <tr><td><code>map_cols</code></td><td><code>int</code></td><td>Map width in tiles</td></tr>
+          <tr><td><code>map_rows</code></td><td><code>int</code></td><td>Map height in tiles</td></tr>
+          <tr><td><code>world_w</code></td><td><code>int</code></td><td>World width in pixels</td></tr>
+          <tr><td><code>world_h</code></td><td><code>int</code></td><td>World height in pixels</td></tr>
+          <tr><td><code>layers</code></td><td><code>dict[str, TileMap]</code></td><td>All tile layers keyed by name</td></tr>
+          <tr><td><code>layer_order</code></td><td><code>list[str]</code></td><td>Layer names in TMX order (bottom → top)</td></tr>
+          <tr><td><code>objects</code></td><td><code>dict[str, list[TmxObject]]</code></td><td>Object groups keyed by name</td></tr>
+          <tr><td><code>properties</code></td><td><code>dict</code></td><td>Map-level custom properties</td></tr>
+          <tr><td><code>surfaces</code></td><td><code>dict[int, Surface]</code></td><td>Raw pygame surfaces keyed by VRAM index</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── TMX Full-Colour ──────────────────────────────────────────── -->
+  <section id="tmx-fullcolor" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-palette me-2"></i>Full-Colour TMX Rendering</h2>
+    <p>The standard PyGB render pipeline quantises tiles to 4 colours. For TMX maps with rich tilesets, use <code>result.surfaces</code> to render at full colour via <code>on_draw</code>.</p>
+    <pre><code class="language-python">@gb.on_start
+def init():
+    result = load_tmx(gb, "level1.tmx")
+    gb.graphics.bg_enabled = False   # disable 4-colour pipeline
+
+@gb.on_draw
+def draw():
+    ts = result.tile_size
+    sx = gb.graphics.scroll_x
+    sy = gb.graphics.scroll_y
+    gb.surface.fill((0, 0, 0))
+
+    for name in result.layer_order:       # draw layers bottom → top
+        tilemap = result.layers[name]
+        cols = gb.width  // ts + 2
+        rows = gb.height // ts + 2
+        for ty in range(rows):
+            for tx in range(cols):
+                map_tx = (tx + sx // ts) % tilemap.WIDTH
+                map_ty = (ty + sy // ts) % tilemap.HEIGHT
+                idx = tilemap.get(map_tx, map_ty)
+                if idx in result.surfaces:
+                    gb.surface.blit(result.surfaces[idx],
+                                    (tx * ts - sx % ts, ty * ts - sy % ts))</code></pre>
+  </section>
+
+  <!-- ── TMX Collision ────────────────────────────────────────────── -->
+  <section id="tmx-collision" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-bounding-box me-2"></i>TMX Collision</h2>
+
+    <h3 class="sub-title">From Editor JSON <span class="badge-gb ms-1">Recommended</span></h3>
+    <p>Paint solid tiles in the editor, save as JSON, then load at runtime:</p>
+    <pre><code class="language-python">import json, os
+from pygb import CollisionMap
+
+cmap = CollisionMap(result.map_cols, result.map_rows, tile_size=result.tile_size)
+if os.path.exists("topWorld_collision.json"):
+    with open("topWorld_collision.json") as f:
+        saved = json.load(f)
+    cmap.from_grid(saved["data"], solid_value=1)
+
+# In on_update — player stops flush against walls, slides along them:
+px, py = cmap.resolve(px, py, player_w, player_h, dx * speed, dy * speed)
+px = max(0, min(result.world_w - player_w, px))
+py = max(0, min(result.world_h - player_h, py))</code></pre>
+
+    <h3 class="sub-title">From a TMX Wall Layer</h3>
+    <p>Build directly from a dedicated TMX tile layer — no editor needed:</p>
+    <pre><code class="language-python">cmap = CollisionMap(result.map_cols, result.map_rows, tile_size=result.tile_size)
+wall_layer = result.layers.get("wall")
+if wall_layer:
+    for ty in range(result.map_rows):
+        for tx in range(result.map_cols):
+            if wall_layer.get(tx, ty) > 0:
+                cmap.set(tx, ty, solid=True)
+
+# Or from specific tile indices:
+cmap.from_tilemap(result.layers["ground"], solid_indices={wall_idx, fence_idx})</code></pre>
+  </section>
+
+  <!-- ── Camera ───────────────────────────────────────────────────── -->
+  <section id="camera" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-camera-video me-2"></i>Camera</h2>
+    <pre><code class="language-python">from pygb import Camera
+
+cam = Camera(
+    gb.graphics,
+    world_w  = result.world_w,
+    world_h  = result.world_h,
+    screen_w = gb.width,
+    screen_h = gb.height,
+)
+
+# In on_update:
+cam.follow(px, py, smooth=0.15)   # smooth=1.0 = instant snap
+
+# Keep sprite screen position aligned with world position
+sprite.x = int(px) - gb.graphics.scroll_x
+sprite.y = int(py) - gb.graphics.scroll_y</code></pre>
+    <div class="callout callout-tip">
+      <div class="callout-title"><i class="bi bi-lightbulb me-1"></i>Initial Snap</div>
+      Call <code>cam.follow(px, py, smooth=1.0)</code> in <code>on_start</code> to snap the camera instantly on the first frame, then use <code>smooth=0.15</code> each update for a lerp effect.
+    </div>
+  </section>
+
+  <!-- ── CollisionMap ─────────────────────────────────────────────── -->
+  <section id="collision" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-shield-check me-2"></i>CollisionMap</h2>
+    <pre><code class="language-python">from pygb import CollisionMap
+
+cmap = CollisionMap(map_cols, map_rows, tile_size=16)
+
+# Build methods
+cmap.set(tx, ty, solid=True)             # mark one cell
+cmap.fill(solid=True)                    # fill all cells
+cmap.fill_rect(tx, ty, w, h)            # fill a rectangle
+cmap.fill_border()                       # solid outer walls
+cmap.from_tilemap(tilemap, solid_indices={3, 5})
+cmap.from_grid(grid_2d, solid_value=1)  # from JSON editor output
+
+# Queries
+cmap.get(tx, ty)                  # → bool  (out-of-bounds = True)
+cmap.solid_at(px, py)             # → bool  pixel-space point test
+cmap.overlaps_rect(x, y, w, h)   # → bool  pixel-space AABB test
+cmap.solid_sides(x, y, w, h)     # → (left, right, top, bottom)
+
+# Movement resolution — axes resolved independently (slide along walls)
+nx, ny = cmap.resolve(x, y, w, h, dx, dy)
+
+# Debug
+cmap.debug_print()   # ASCII map to stdout</code></pre>
+    <div class="callout callout-warn">
+      <div class="callout-title"><i class="bi bi-exclamation-triangle me-1"></i>Tunnelling</div>
+      <code>resolve()</code> may tunnel through thin walls if displacement per frame is ≥ <code>tile_size</code>. Keep speed below tile size per frame.
+    </div>
+  </section>
+
+  <!-- ── Utilities ────────────────────────────────────────────────── -->
+  <section id="utils" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-tools me-2"></i>Helpers</h2>
+    <pre><code class="language-python">from pygb import Timer, Rect, Animation, RNG, lerp, clamp, sign
+
+# Timer
+t = Timer(frames=30, repeat=True)
+if t.tick():    # returns True every 30 frames
+    ...
+
+# Rect
+r = Rect(x, y, w, h)
+r.overlaps(other_rect)
+r.contains(px, py)
+r.move(dx, dy)     # returns a new Rect
+
+# Animation
+anim = Animation(frames=[0, 1, 2, 1], speed=8, loop=True)
+vram_idx = anim.update()   # advance and return current frame index
+
+# RNG — GB-style LCG pseudo-random
+rng = RNG(seed=0x1234)
+rng.randint(0, 9)
+rng.choice(["a","b","c"])
+rng.randf()
+
+# Scalar helpers
+clamp(value, lo, hi)
+lerp(a, b, t)
+sign(x)          # -1, 0, or 1</code></pre>
+  </section>
+
+  <!-- ── Font ─────────────────────────────────────────────────────── -->
+  <section id="font" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-fonts me-2"></i>Font</h2>
+    <pre><code class="language-python">from pygb import build_font_tiles, draw_text
+
+# Load built-in 8×8 bitmap font into VRAM
+font_tiles, char_map = build_font_tiles()
+font_start = gb.graphics.add_tiles(font_tiles)
+
+# Draw text into a TileMap (e.g. the Window layer)
+draw_text(
+    gb.graphics.window,
+    text       = "SCORE: 0",
+    tx         = 0,      # start column in tile coords
+    ty         = 0,      # start row
+    char_map   = char_map,
+    base_index = font_start,
+)</code></pre>
+  </section>
+
+  <!-- ── Palettes ─────────────────────────────────────────────────── -->
+  <section id="color" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-droplet me-2"></i>Palettes</h2>
+    <pre><code class="language-python">import pygb.color as color
+
+gb = GameBoy(title="My Game", palette=color.DMG)
+
+# Available palettes:
+# color.DMG     — original Game Boy greenish LCD
+# color.GRAY    — neutral greyscale
+# color.POCKET  — Game Boy Pocket (warm grey)
+# color.GBC     — Game Boy Color vibrant tones</code></pre>
+    <p>Each palette is a list of four <code>(R, G, B)</code> tuples, from lightest (index 0) to darkest (index 3).</p>
+    <div class="d-flex gap-2 flex-wrap mt-2">
+      <div class="p-2 rounded text-center" style="background:#9bbc0f;color:#0f380f;font-size:.78rem;font-weight:700;min-width:70px;">DMG</div>
+      <div class="p-2 rounded text-center" style="background:#e0e0e0;color:#1a1a1a;font-size:.78rem;font-weight:700;min-width:70px;">GRAY</div>
+      <div class="p-2 rounded text-center" style="background:#c6b89a;color:#1a1a1a;font-size:.78rem;font-weight:700;min-width:70px;">POCKET</div>
+      <div class="p-2 rounded text-center" style="background:#5bc8f5;color:#0d1117;font-size:.78rem;font-weight:700;min-width:70px;">GBC</div>
+    </div>
+  </section>
+
+  <!-- ── Editor ───────────────────────────────────────────────────── -->
+  <section id="editor" class="doc-section">
+    <h2 class="section-title"><i class="bi bi-brush me-2"></i>Collision Editor</h2>
+    <p>Paint solid/passable tiles on a PNG tileset or a Tiled <code>.tmx</code> map and save as JSON.</p>
+
+    <h3 class="sub-title">Usage</h3>
+    <pre><code class="language-bash"># PNG tileset
+python -m pygb.editor &lt;image.png&gt;
+python -m pygb.editor &lt;image.png&gt; output.json
+
+# Tiled TMX map (all tile layers rendered automatically)
+python -m pygb.editor &lt;map.tmx&gt;
+python -m pygb.editor &lt;map.tmx&gt; output.json</code></pre>
+
+    <h3 class="sub-title">Controls</h3>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead><tr><th>Input</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td><kbd>Left click</kbd> / drag</td><td>Mark tiles solid (red overlay)</td></tr>
+          <tr><td><kbd>Right click</kbd> / drag</td><td>Mark tiles passable (clear)</td></tr>
+          <tr><td><kbd>Middle drag</kbd></td><td>Pan the view</td></tr>
+          <tr><td><kbd>Scroll wheel</kbd></td><td>Zoom in / out</td></tr>
+          <tr><td><kbd>S</kbd></td><td>Save JSON</td></tr>
+          <tr><td><kbd>R</kbd></td><td>Clear all solid tiles</td></tr>
+          <tr><td><kbd>Z</kbd></td><td>Undo last paint stroke</td></tr>
+          <tr><td><kbd>Escape</kbd></td><td>Quit</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">JSON Format</h3>
+    <pre><code class="language-json">{ "cols": 30, "rows": 20, "data": [[0,1,0,...], ...] }</code></pre>
+
+    <h3 class="sub-title">Loading the Output</h3>
+    <pre><code class="language-python">import json
+from pygb import CollisionMap
+
+with open("topWorld_collision.json") as f:
+    saved = json.load(f)
+
+cmap = CollisionMap(saved["cols"], saved["rows"], tile_size=result.tile_size)
+cmap.from_grid(saved["data"], solid_value=1)
+
+# In on_update — player hitbox can be smaller than tile_size:
+px, py = cmap.resolve(px, py, 8, 8, dx * speed, dy * speed)
+px = max(0, min(world_w - 8, px))
+py = max(0, min(world_h - 8, py))</code></pre>
+  </section>
+
+  <!-- Footer -->
+  <hr class="mt-5" style="border-color:#30363d;" />
+  <footer class="d-flex justify-content-between align-items-center py-3 text-muted" style="font-size:.8rem;">
+    <span>PyGB v0.1.0 — Game Boy-style engine for Python</span>
+    <span>pygame-ce · pytmx · Bootstrap 5</span>
+  </footer>
+
+</main>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Highlight.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+<script>
+  // Active sidebar link on scroll
+  const sections = document.querySelectorAll("section[id], div[id='top']");
+  const links    = document.querySelectorAll(".sidebar-nav .nav-link");
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove("active"));
+        const active = document.querySelector(`.sidebar-nav .nav-link[href="#${entry.target.id}"]`);
+        if (active) {
+          active.classList.add("active");
+          active.scrollIntoView({ block: "nearest" });
+        }
+      }
+    });
+  }, { rootMargin: "-30% 0px -60% 0px" });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
